@@ -7,7 +7,7 @@
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1",
+    "react-dom": "^15.4.1"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
@@ -23,5 +23,9 @@
     "url": "git+https://github.com/vanpho93/redux-kpt.git"
   },
   "author": "Van Pho Nguyen",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vanpho93/redux-kpt/issues"
+  },
+  "homepage": "https://github.com/vanpho93/redux-kpt#readme"
 }
