@@ -1,8 +1,10 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Hello = require('./components/Hello');
+var List = require('./components/List');
 
 ReactDOM.render(
-    <Hello/>,
+    <List/>,
   document.getElementById('root')
 );
+
+require('./examples.js');

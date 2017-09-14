@@ -2,7 +2,10 @@ import React from 'react';
 
 class Hello extends React.Component{
   render(){
-    return <h1>Hello component</h1>
+    <form action="submit">
+      <input type="text" value="" placeholder="Enter text" ref="txt" />
+      <button>Add</button>
+    </form>
   }
 }
 
