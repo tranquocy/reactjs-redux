@@ -23019,9 +23019,7 @@ var NoteForm = function (_React$Component) {
 
       if (this.state.isAdding) return _react2.default.createElement(
         'form',
-        { onSubmit: function onSubmit() {
-            return _this2.handleSubmit();
-          } },
+        { onSubmit: this.handleSubmit.bind(this) },
         _react2.default.createElement('input', { type: 'text', placeholder: 'Enter text', ref: 'txt' }),
         _react2.default.createElement(
           'button',
@@ -23051,56 +23049,62 @@ module.exports = NoteForm;
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var redux = __webpack_require__(194);
 
-var defaultState = {
-  mang: ['Android', 'NodeJS', 'PHP'],
-  isAdding: false
-};
-
-var reducer = function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
-  var action = arguments[1];
+var mangReducer = function mangReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['Android', 'NodeJS', 'PHP'];
 
   switch (action.type) {
-    case 'TOGGLE_IS_ADDING':
-      return _extends({}, state, { isAdding: !state.isAdding });
     case 'ADD_ITEM':
-      return _extends({}, state, { mang: [].concat(_toConsumableArray(state.mang), [action.item]) });
+      return [].concat(_toConsumableArray(state.mang), [action.item]);
     case 'REMOVE_ITEM':
-      return _extends({}, state, { mang: state.mang.filter(function (e, i) {
-          return i != action.index;
-        }) });
+      return state.filter(function (e, i) {
+        return i != action.index;
+      });
     default:
       return state;
   }
 };
 
-var store = redux.createStore(reducer);
+var isAddingReducer = function isAddingReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var action = arguments[1];
 
-console.log(store.getState());
+  switch (action.type) {
+    case 'TOGGLE_IS_ADDING':
+      return !state.isAdding;
+    default:
+      return state;
+  }
+};
+
+var reducer = redux.combineReducers({
+  mang: mangReducer,
+  isAdding: isAddingReducer
+});
+
+var store = redux.createStore(reducer, redux.compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
+  return f;
+}));
+
+store.subscribe(function () {
+  var str = store.getState();
+  document.getElementById('p-detail').innerHTML = JSON.stringify(str);
+});
 
 store.dispatch({ type: 'TOGGLE_IS_ADDING' });
-
-console.log(store.getState());
 
 store.dispatch({
   type: 'ADD_ITEM',
   item: 'CSS'
 });
 
-console.log(store.getState());
-
 store.dispatch({
   type: 'REMOVE_ITEM',
-  index: 4
+  index: 2
 });
-
-console.log(store.getState());
 
 /***/ }),
 /* 194 */

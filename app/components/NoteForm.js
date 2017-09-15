@@ -19,7 +19,7 @@ class NoteForm extends React.Component{
 
   render(){
     if(this.state.isAdding) return (
-      <form onSubmit={() => this.handleSubmit()}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <input type="text" placeholder="Enter text" ref="txt" />
         <button>Add</button>
       </form>

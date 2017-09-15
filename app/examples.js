@@ -1,41 +1,49 @@
 var redux = require('redux');
 
-var defaultState = {
-  mang: ['Android', 'NodeJS', 'PHP'],
-  isAdding: false
-}
-
-var reducer = (state = defaultState, action) => {
+var mangReducer = (state = ['Android', 'NodeJS', 'PHP']) => {
   switch (action.type) {
-    case 'TOGGLE_IS_ADDING':
-      return {...state, isAdding: !state.isAdding}
     case 'ADD_ITEM':
-      return {...state, mang: [...state.mang, action.item]}
+      return [...state.mang, action.item]
     case 'REMOVE_ITEM':
-      return {...state, mang: state.mang.filter((e, i) => i!=action.index)}
+      return state.filter((e, i) => i!=action.index)
     default:
     return state;
   }
 }
 
-var store = redux.createStore(reducer);
+var isAddingReducer = (state = false, action) => {
+  switch (action.type) {
+    case 'TOGGLE_IS_ADDING':
+      return !state.isAdding
+    default:
+    return state;
+  }
+}
 
-console.log(store.getState());
+var reducer = redux.combineReducers({
+  mang: mangReducer,
+  isAdding: isAddingReducer
+});
+
+var store = redux.createStore(reducer, redux.compose(
+  window.devToolsExtension?window.devToolsExtension(): f => f
+));
+
+store.subscribe(() => {
+  var str = store.getState();
+  document.getElementById('p-detail').innerHTML = JSON.stringify(str);
+});
+
 
 store.dispatch({type: 'TOGGLE_IS_ADDING'});
-
-console.log(store.getState());
 
 store.dispatch({
   type: 'ADD_ITEM',
   item: 'CSS'
 });
 
-console.log(store.getState());
 
 store.dispatch({
   type: 'REMOVE_ITEM',
-  index: 4
+  index: 2
 })
-
-console.log(store.getState());
