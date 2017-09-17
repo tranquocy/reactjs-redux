@@ -1,24 +1,22 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {toggle, addItem} from 'action';
 
 class NoteForm extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = {isAdding: false}
-  }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.handleAdd(this.refs.txt.value);
-    this.refs.txt.value = '';
-    this.toogle();
+    var {dispatch} =  this.props;
+    dispatch(addItem(this.refs.txt.value));
+    dispatch(toggle());
   }
 
   toggle() {
-    this.state.isAdding = !this.state.isAdding;
-    this.setState(this.state);
+    var {dispatch} =  this.props;
+    dispatch(toggle());
   }
 
   render(){
-    if(this.state.isAdding) return (
+    if(this.props.isAdding) return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <input type="text" placeholder="Enter text" ref="txt" />
         <button>Add</button>
@@ -28,4 +26,6 @@ class NoteForm extends React.Component{
   }
 }
 
-module.exports = NoteForm;
+module.exports = connect(function(state) {
+  return {isAdding: state.isAdding}
+})(NoteForm);
